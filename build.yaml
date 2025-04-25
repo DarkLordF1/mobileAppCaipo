@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      injectable_generator:injectable_builder:
+        options:
+          auto_register: true
+          # Register all classes inside lib/core/
+          class_pattern: "Service$|Repository$|Provider$"
+          # Look for classes in these folders
+          source_pattern: "lib/core/|lib/data/|lib/domain/|lib/presentation/" 

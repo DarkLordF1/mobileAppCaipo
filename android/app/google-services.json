@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "523970252754",
+    "project_id": "caipo-mobile-8aa1c",
+    "storage_bucket": "caipo-mobile-8aa1c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523970252754:android:82bfec306ba4560791820b",
+        "android_client_info": {
+          "package_name": "com.flomadlabs.caipoappv0"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523970252754-0ir6826s7fhhfbghe5i2sqsgj3o30q6b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flomadlabs.caipoappv0",
+            "certificate_hash": "efea025883d76abc9b5daddf00b4a857d5224898"
+          }
+        },
+        {
+          "client_id": "523970252754-itgqfajnln8go2oht0jp07h9i5kk8jt6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt7i6wgC_61QXqbUWr0Nc_5yGy6kAZEHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523970252754-itgqfajnln8go2oht0jp07h9i5kk8jt6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "523970252754-ikdqtsur14au8niter1r289qr79jh1ap.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.caipoappv0"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

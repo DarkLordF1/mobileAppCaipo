@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- ✅ Required for network communication -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- ✅ Optional: Allows logging for debugging -->
+    <application android:usesCleartextTraffic="true"/>
+</manifest>

@@ -1,0 +1,2 @@
+C:/Users/purpl/OneDrive/Desktop/FlomadLabs/CAIPO-Mobile/android/app/.cxx/Debug/2k3x683r/x86/CMakeFiles/edit_cache.dir
+C:/Users/purpl/OneDrive/Desktop/FlomadLabs/CAIPO-Mobile/android/app/.cxx/Debug/2k3x683r/x86/CMakeFiles/rebuild_cache.dir
