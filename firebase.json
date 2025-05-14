@@ -1,1 +1,9 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"caipo-mobile-8aa1c","appId":"1:523970252754:android:82bfec306ba4560791820b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"caipo-mobile-app","configurations":{"ios":"1:721069717974:ios:db6f11d76ded0113978c77","macos":"1:721069717974:ios:db6f11d76ded0113978c77","web":"1:721069717974:web:a0d002790ed01951978c77"}}},"ios":{"default":{"projectId":"caipo-mobile-app","appId":"1:721069717974:ios:db6f11d76ded0113978c77","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"caipo-mobile-app","appId":"1:721069717974:ios:db6f11d76ded0113978c77","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}}}}}
+{"flutter":
+{"platforms":{"android":{"default":{"projectId":"caipo-mobile-8aa1c","appId":"1:523970252754:android:82bfec306ba4560791820b","fileOutput":"android/app/google-services.json"}},
+"dart":{"lib/firebase_options.dart":{"projectId":"caipo-mobile-app",
+"configurations":
+{"ios":"1:721069717974:ios:db6f11d76ded0113978c77",
+"macos":"1:721069717974:ios:db6f11d76ded0113978c77",
+"web":"1:721069717974:web:a0d002790ed01951978c77"}}},
+"ios":{"default":{"projectId":"caipo-mobile-app","appId":"1:721069717974:ios:db6f11d76ded0113978c77","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},
+"macos":{"default":{"projectId":"caipo-mobile-app","appId":"1:721069717974:ios:db6f11d76ded0113978c77","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}}}}}

@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+
+import 'firebase_options.dart';
 import 'di/injection.dart';
 import 'data/services/firebase_service.dart';
 import 'presentation/providers/theme_provider.dart';
@@ -15,28 +19,46 @@ import 'presentation/screens/home/recording_screen.dart';
 import 'presentation/screens/ai/transcription_screen.dart';
 import 'presentation/screens/splash/splash_screen.dart';
 
-// Global key for navigator to use in error handling
+// Global navigator key for error handling and navigation
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  // Catch Flutter errors and log them
+  // Catch all Flutter framework errors
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.presentError(details);
-    // Here you could add custom error logging
+    // You can add custom logging here
   };
-  
-  // Catch async errors that aren't caught by Flutter's error zone
+
+  // Guarded zone for uncaught async errors
   runZonedGuarded(() async {
-    // Ensure Flutter is initialized
+    // Ensure Flutter bindings are initialized
     WidgetsFlutterBinding.ensureInitialized();
-    
-    // Set preferred orientations
+
+    // 1. Load environment variables
+    await dotenv.load(fileName: '.env');
+
+    // 2. Initialize Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    // 3. Initialize your FirebaseService wrappers (should not re-call initializeApp)
+    await FirebaseService.initialize();
+
+    // 4. Configure dependency injection
+    await configureDependencies();
+
+    // 5. Prepare theme provider
+    final themeProvider = getIt<ThemeProvider>();
+    await themeProvider.loadPreferences();
+
+    // 6. Set device orientations
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    
-    // Set system UI overlay style for a more immersive experience
+
+    // 7. Set system UI for immersive look
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
@@ -45,35 +67,21 @@ Future<void> main() async {
       systemNavigationBarDividerColor: Colors.transparent,
     ));
 
-    // Initialize services in parallel for faster startup
-    await Future.wait([
-      FirebaseService.initialize(),
-      dotenv.load(fileName: ".env"),
-      // Add other async initialization tasks here
-    ]);
-
-    // Configure dependency injection
-    await configureDependencies();
-
-    // Get theme provider and initialize it
-    final themeProvider = getIt<ThemeProvider>();
-    themeProvider.initialize(); // Initialize with default values
-    await themeProvider.loadPreferences();
-
+    // 8. Run the app with providers
     runApp(
       MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: themeProvider),
-          // Add more providers here
+          // Add other providers here
         ],
         child: const MyApp(),
       ),
     );
-  }, (error, stackTrace) {
-    // Handle any errors not caught by Flutter's error zone
-    debugPrint('Uncaught error: $error');
-    debugPrint(stackTrace.toString());
-    // Here you could add custom error reporting
+  }, (error, stack) {
+    // Handle uncaught asynchronous errors
+    debugPrint('Uncaught async error: $error');
+    debugPrint(stack.toString());
+    // Add custom error reporting if needed
   });
 }
 
@@ -82,34 +90,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    
+    final themeProvider = context.watch<ThemeProvider>();
     return MaterialApp(
       title: 'CAIPO Assistant',
       debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
       theme: themeProvider.getThemeData(false),
       darkTheme: themeProvider.getThemeData(true),
       themeMode: themeProvider.themeMode,
-      navigatorKey: navigatorKey,
       home: const SplashScreen(),
       routes: {
-        '/onboarding': (context) => const OnboardingScreen(),
-        '/welcome': (context) => const WelcomeScreen(),
-        '/auth': (context) => const AuthScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/settings': (context) => const SettingsScreen(),
-        '/record': (context) => const RecordingScreen(),
-        '/transcription': (context) => const TranscriptionScreen(audioFilePath: ""),
+        '/onboarding': (_) => const OnboardingScreen(),
+        '/welcome': (_) => const WelcomeScreen(),
+        '/auth': (_) => const AuthScreen(),
+        '/home': (_) => const HomeScreen(),
+        '/settings': (_) => const SettingsScreen(),
+        '/record': (_) => const RecordingScreen(),
+        '/transcription': (_) => const TranscriptionScreen(audioFilePath: ''),
       },
       builder: (context, child) {
-        // Apply font scaling for accessibility
+        // Clamp text scaling for accessibility
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(MediaQuery.of(context).textScaleFactor.clamp(0.85, 1.3)),
+            textScaler: TextScaler.linear(
+              MediaQuery.of(context).textScaleFactor.clamp(0.85, 1.3),
+            ),
           ),
           child: child!,
         );
       },
     );
   }
-} 
+}
