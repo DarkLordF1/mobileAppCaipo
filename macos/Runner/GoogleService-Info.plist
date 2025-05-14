@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>523970252754-ikdqtsur14au8niter1r289qr79jh1ap.apps.googleusercontent.com</string>
+	<string>721069717974-ajcvcn11jjkkdraf8r0i0638t0npcl8r.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.523970252754-ikdqtsur14au8niter1r289qr79jh1ap</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>523970252754-0ir6826s7fhhfbghe5i2sqsgj3o30q6b.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.721069717974-ajcvcn11jjkkdraf8r0i0638t0npcl8r</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAEHU9e-UdKJA_9fUahAzPurZpW6z-o7GE</string>
+	<string>AIzaSyCtYzebHIpHVXEQpHrvSyzd5KwznMqYpFA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>523970252754</string>
+	<string>721069717974</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.caipoappv0</string>
 	<key>PROJECT_ID</key>
-	<string>caipo-mobile-8aa1c</string>
+	<string>caipo-mobile-app</string>
 	<key>STORAGE_BUCKET</key>
-	<string>caipo-mobile-8aa1c.firebasestorage.app</string>
+	<string>caipo-mobile-app.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:523970252754:ios:aed69ce7245f5f9491820b</string>
+	<string>1:721069717974:ios:db6f11d76ded0113978c77</string>
 </dict>
 </plist>

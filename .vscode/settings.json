@@ -1,5 +1,5 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "automatic",
-    "cmake.sourceDirectory": "/Users/aimanabed/Desktop/flomadlabs/CAIPO app/CAIPO-Mobile-main/linux/flutter"
+    "cmake.sourceDirectory": "/Users/aimanabed/projects/caipo_mobile_main/linux"
 }
