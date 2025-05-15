@@ -1,3 +1,4 @@
+// lib/main.dart
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -10,55 +11,53 @@ import 'firebase_options.dart';
 import 'di/injection.dart';
 import 'data/services/firebase_service.dart';
 import 'presentation/providers/theme_provider.dart';
-import 'presentation/screens/settings/settings_page.dart';
-import 'presentation/screens/home/home_screen.dart';
+import 'presentation/screens/splash/splash_screen.dart';
+import 'presentation/screens/support/onboarding_screen.dart';
 import 'presentation/screens/welcome/welcome_screen.dart';
 import 'presentation/screens/auth/auth_screen.dart';
-import 'presentation/screens/support/onboarding_screen.dart';
+import 'presentation/screens/home/home_screen.dart';
+import 'presentation/screens/settings/settings_page.dart';
 import 'presentation/screens/home/recording_screen.dart';
 import 'presentation/screens/ai/transcription_screen.dart';
-import 'presentation/screens/splash/splash_screen.dart';
 
-// Global navigator key for error handling and navigation
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+// A global Navigator key (if you need it for error handling/navigation)
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  // Catch all Flutter framework errors
-  FlutterError.onError = (FlutterErrorDetails details) {
+  // 1) Catch Flutter framework errors
+  FlutterError.onError = (details) {
     FlutterError.presentError(details);
-    // You can add custom logging here
+    // TODO: send to your logging service
   };
 
-  // Guarded zone for uncaught async errors
-  runZonedGuarded(() async {
-    // Ensure Flutter bindings are initialized
-    WidgetsFlutterBinding.ensureInitialized();
+  // 2) Ensure binding is initialized (needed for SystemChrome & async)
+  WidgetsFlutterBinding.ensureInitialized();
 
-    // 1. Load environment variables
-    await dotenv.load(fileName: '.env');
+  // 3) Load environment variables
+  await dotenv.load(fileName: '.env');
 
-    // 2. Initialize Firebase
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+  // 4) Initialize Firebase with your generated options
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-    // 3. Initialize your FirebaseService wrappers (should not re-call initializeApp)
-    await FirebaseService.initialize();
+  // 5) Initialize your own FirebaseService (wrappers, etc.)
+  await FirebaseService.initialize();
 
-    // 4. Configure dependency injection
-    await configureDependencies();
+  // 6) Configure dependency injection
+  await configureDependencies();
 
-    // 5. Prepare theme provider
-    final themeProvider = getIt<ThemeProvider>();
-    await themeProvider.loadPreferences();
+  // 7) Prepare your ThemeProvider
+  final themeProvider = getIt<ThemeProvider>();
+  await themeProvider.loadPreferences();
 
-    // 6. Set device orientations
-    await SystemChrome.setPreferredOrientations([
+  // 8) Run the app inside a guarded zone to catch any uncaught async errors
+  runZonedGuarded(() {
+    // Lock orientation & set system UI chrome once at startup
+    SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-
-    // 7. Set system UI for immersive look
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
@@ -67,21 +66,20 @@ Future<void> main() async {
       systemNavigationBarDividerColor: Colors.transparent,
     ));
 
-    // 8. Run the app with providers
+    // 9) Finally launch the app with your providers
     runApp(
       MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: themeProvider),
-          // Add other providers here
+          // add other providers here
         ],
         child: const MyApp(),
       ),
     );
   }, (error, stack) {
-    // Handle uncaught asynchronous errors
-    debugPrint('Uncaught async error: $error');
-    debugPrint(stack.toString());
-    // Add custom error reporting if needed
+    // Log any uncaught errors here
+    debugPrint('Uncaught async error:\n$error\n$stack');
+    // TODO: send to your error reporting service
   });
 }
 
@@ -91,6 +89,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
+
     return MaterialApp(
       title: 'CAIPO Assistant',
       debugShowCheckedModeBanner: false,
@@ -101,20 +100,19 @@ class MyApp extends StatelessWidget {
       home: const SplashScreen(),
       routes: {
         '/onboarding': (_) => const OnboardingScreen(),
-        '/welcome': (_) => const WelcomeScreen(),
-        '/auth': (_) => const AuthScreen(),
-        '/home': (_) => const HomeScreen(),
-        '/settings': (_) => const SettingsScreen(),
-        '/record': (_) => const RecordingScreen(),
-        '/transcription': (_) => const TranscriptionScreen(audioFilePath: ''),
+        '/welcome':    (_) => const WelcomeScreen(),
+        '/auth':       (_) => const AuthScreen(),
+        '/home':       (_) => const HomeScreen(),
+        '/settings':   (_) => const SettingsScreen(),
+        '/record':     (_) => const RecordingScreen(),
+        '/transcribe': (_) => const TranscriptionScreen(audioFilePath: ''),
       },
       builder: (context, child) {
-        // Clamp text scaling for accessibility
+        // Enforce a text‐scale clamp for accessibility
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(
-              MediaQuery.of(context).textScaleFactor.clamp(0.85, 1.3),
-            ),
+            textScaleFactor:
+                MediaQuery.of(context).textScaleFactor.clamp(0.85, 1.3),
           ),
           child: child!,
         );
